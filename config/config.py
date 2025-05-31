@@ -1,12 +1,10 @@
 import os
 DATABASE_CONFIG = {
-    'data_warehouse': {
-        'host': 'localhost',
-        'port': 5432,
-        'user': 'postgres',
-        'password': 'O-guruma',
-        'database': 'bank_data'
-    }
+    'host': 'localhost',
+    'port': 5432,
+    'user': 'postgres',
+    'password': 'O-guruma',
+    'database': 'bank_data'
 }
 
 API_CONFIG = {

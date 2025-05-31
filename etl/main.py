@@ -12,6 +12,8 @@ from etl.transform import transform_data
 from config.config import API_CONFIG, DATA_SOURCES_DIR
 
 
+
+
 def load_data_from_apis():
     for api_name, api_config in API_CONFIG.items():
         print(f"Loading data from {api_name} API...")
