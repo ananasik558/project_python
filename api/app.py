@@ -1,10 +1,9 @@
-from flask import Flask
+from fastapi import FastAPI
 from routes import configure_routes
+import uvicorn
 
-app = Flask(__name__)
-
-# Настройка маршрутов
+app = FastAPI()
 configure_routes(app)
 
 if __name__ == "__main__":
-    app.run(debug=True, host="0.0.0.0", port=5000)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
