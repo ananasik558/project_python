@@ -25,3 +25,13 @@ def extract_from_xml(file_path):
         row = {child.tag: child.text for child in item}
         data.append(row)
     return pd.DataFrame(data)
+
+
+def extract_data_from_csv(directory):
+    data_frames = []
+    for file_name in os.listdir(directory):
+        if file_name.endswith(".csv"):
+            file_path = os.path.join(directory, file_name)
+            data = pd.read_csv(file_path)
+            data_frames.append(data)
+    return pd.concat(data_frames, ignore_index=True)

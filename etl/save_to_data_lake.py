@@ -4,7 +4,7 @@ from datetime import datetime
 
 
 def save_to_data_lake(data, source_type, folder_name):
-    base_path = os.path.join("data_lake", folder_name)
+    base_path = os.path.join("../data_lake", folder_name)
     os.makedirs(base_path, exist_ok=True)
 
     current_date = datetime.now().strftime("%Y-%m-%d")

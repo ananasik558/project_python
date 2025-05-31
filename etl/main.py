@@ -3,9 +3,12 @@ from etl.extract import (
     extract_from_api,
     extract_from_csv,
     extract_from_json,
-    extract_from_xml
+    extract_from_xml,
+    extract_data_from_csv
 )
 from etl.save_to_data_lake import save_to_data_lake
+from etl.load import load_data
+from etl.transform import transform_data
 from config.config import API_CONFIG, DATA_SOURCES_DIR
 
 
@@ -52,6 +55,14 @@ def load_data_from_files():
                 print(f"Failed to process file {file_name}: {e}")
 
 
+
 if __name__ == "__main__":
     load_data_from_apis()
     load_data_from_files()
+    directory = "../data_lake"
+    raw_data = extract_data_from_csv(directory)
+
+    customers, credit_cards, ip_addresses, passwords, customer_transactions = transform_data(raw_data)
+
+    load_data(customers, credit_cards, ip_addresses, passwords, customer_transactions)
+

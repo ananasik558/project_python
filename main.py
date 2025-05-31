@@ -1,16 +1,25 @@
-# This is a sample Python script.
+import pandas as pd
+from etl.extract import extract_data
+from etl.transform import transform_data
+from etl.load import load_data
+import logging
 
-# Press Ctrl+F5 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+# Настройка логирования
+logging.basicConfig(filename='logs/etl_log.txt', level=logging.INFO)
 
+if __name__ == "__main__":
+    logging.info("ETL процесс начался")
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press F9 to toggle the breakpoint.
+    try:
+        df = extract_data("data_sources/generated_data.csv")
+        logging.info("Данные извлечены")
 
+        transformed_dfs = transform_data(df)
+        logging.info("Данные нормализованы")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+        load_data(transformed_dfs)
+        logging.info("Данные загружены в БД")
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    except Exception as e:
+        logging.error(f"Ошибка в ETL: {e}")
+        print(f"Произошла ошибка: {e}")
