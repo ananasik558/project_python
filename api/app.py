@@ -1,9 +1,13 @@
 from fastapi import FastAPI
-from routes import configure_routes
-import uvicorn
+from routes.client_routes import router as client_router
+from routes.scoring_routes import router as scoring_router
 
-app = FastAPI()
-configure_routes(app)
+app = FastAPI(
+    title="Bank Data API",
+    description="Центр данных для банковских интеллектуальных сервисов",
+    version="1.0"
+)
 
-if __name__ == "__main__":
-    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True)
+# Регистрация маршрутов
+app.include_router(client_router)
+app.include_router(scoring_router)
