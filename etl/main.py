@@ -7,17 +7,28 @@ from etl.extract import (
 )
 from etl.save_to_data_lake import save_to_data_lake
 from config.config import API_CONFIG, DATA_SOURCES_DIR
+from datetime import datetime
 
 
 
 
 def load_data_from_apis():
+    if not os.path.exists(DATA_SOURCES_DIR):
+        print(f"Directory {DATA_SOURCES_DIR} does not exist.")
+        return
+    api_dir = os.path.join(DATA_SOURCES_DIR, "api")
+    os.makedirs(api_dir, exist_ok=True)
+
     for api_name, api_config in API_CONFIG.items():
-        print(f"Loading data from {api_name} API...")
+        print(f"Fetching data from API: {api_name}")
         try:
             url = api_config['url']
             headers = {'Authorization': f"Bearer {api_config['api_key']}"}
-            data = extract_from_api(url, headers)
+
+            current_date = datetime.now().strftime("%Y-%m-%d")
+            json_path = os.path.join(api_dir, f"{api_name}_{current_date}.json")
+
+            data = extract_from_api(url, headers, json_path)
             save_to_data_lake(data, api_name, api_name)
         except Exception as e:
             print(f"Failed to load data from {api_name} API: {e}")

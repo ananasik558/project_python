@@ -1,12 +1,20 @@
 import requests
 import pandas as pd
 import xml.etree.ElementTree as ET
+import os
+import json
 from datetime import datetime
 
-def extract_from_api(url, headers=None):
+def extract_from_api(url, headers=None, save_path=None):
     response = requests.get(url, headers=headers)
     if response.status_code == 200:
         data = response.json()
+
+        if save_path:
+            os.makedirs(os.path.dirname(save_path), exist_ok=True)
+            with open(save_path, "w", encoding="utf-8") as f:
+                json.dump(data, f, ensure_ascii=False, indent=4)
+
         df = pd.DataFrame(data)
         df.insert(0, 'id', range(1, len(df) + 1))
         return df
